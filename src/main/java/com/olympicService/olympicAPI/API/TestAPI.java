@@ -1,4 +1,4 @@
-package com.olymicService.olympicAPI.API;
+package com.olympicService.olympicAPI.API;
 
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
