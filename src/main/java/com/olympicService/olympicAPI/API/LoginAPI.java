@@ -27,7 +27,7 @@ public class LoginAPI {
 		if (bindingResult.hasErrors()) {
 			result.put("code", 501);
 			result.put("msg", "param_error");
-			result.put("reultData", new JSONObject());
+			result.put("resultData", new JSONObject());
 		}else {
 			JSONObject info = LoginServiceImpl.checkLogin(user.getAccount(), user.getPassword());
 			
@@ -42,12 +42,12 @@ public class LoginAPI {
 				reultData.put("ret", info.get("ret"));
 				reultData.put("act", info.get("act"));
 				
-				result.put("reultData", reultData);
+				result.put("resultData", reultData);
 				
 			}else {
 				result.put("code", 201);
 				result.put("msg", "fail");
-				result.put("reultData", new JSONObject());
+				result.put("resultData", new JSONObject());
 			}
 		}
 		

@@ -31,6 +31,7 @@ public class LoginServiceImpl implements LoginService {
 		AES256ServiceImpl.setKey("uBdUx82vPHkDKb284d7NkjFoNcKWBuka", "c558Gq0YQK2QUlMc");
 		
 		account = AES256ServiceImpl.encode(account);
+
 		password = Tool.getMD5(password);
 		
 		AdminUsers AdminUsers = AdminUsersRepository.findByEmailAndPassword(account, password);
