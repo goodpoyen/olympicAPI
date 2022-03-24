@@ -11,7 +11,7 @@ public class TestAPI {
 	@PostMapping("/test")
 	JSONObject newEmployee(@RequestBody String data) {
 		JSONObject object = new JSONObject(data);
-		
+
 		System.out.println(object);
 		return object;
 	}

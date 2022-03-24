@@ -7,30 +7,30 @@ import org.springframework.stereotype.Service;
 public class WebTokenService {
 	@Autowired
 	private JWTService JWTService;
-	
+
 	private String secret = "-555018516626007488A";
-	
-	public String getAccessToken () {
+
+	public String getAccessToken() {
 		long timeout = 1000 * 60 * 30;
-		
+
 		String accessToken = JWTService.generateToken(timeout, "olympic", secret);
-		
+
 		return accessToken;
 	}
-	
-	public String getReflashToken () {
+
+	public String getReflashToken() {
 		long timeout = 1000 * 60 * 60 * 4;
-		
+
 		String reflashToken = JWTService.generateToken(timeout, "twolympic", secret);
-		
+
 		return reflashToken;
 	}
-	
-	public Boolean encodeAccessToken (String token) {
+
+	public Boolean encodeAccessToken(String token) {
 		return JWTService.validateToken(token, "olympic", secret);
 	}
-	
-	public Boolean encodeReflashToken (String token) {
+
+	public Boolean encodeReflashToken(String token) {
 		return JWTService.validateToken(token, "twolympic", secret);
 	}
 }

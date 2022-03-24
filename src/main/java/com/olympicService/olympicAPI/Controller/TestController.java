@@ -11,14 +11,14 @@ import com.olympicService.olympicAPI.Service.Impl.JWTService;
 public class TestController {
 	@Autowired
 	private AES256ServiceImpl AES256ServiceImpl;
-	
+
 	@Autowired
 	private JWTService JWTService;
-	
+
 	private String secret = "-555018516626007488A";
-	
+
 	@GetMapping("/test")
-	public String test () throws Exception {
+	public String test() throws Exception {
 //		long timeout = 1000 * 60 * 30;
 //		
 //		String a = JWTService.generateToken(timeout, "olympic", secret);

@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
 		} else {
 			user.put("status", false);
 		}
-		
+
 		return user;
 	}
 }

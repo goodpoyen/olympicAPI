@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginValid {
 	@NotNull
-    public String account;
-	
+	public String account;
+
 	@NotNull
-	@Size(message = "長度錯誤",min = 8, max = 16)
+	@Size(message = "長度錯誤", min = 8, max = 16)
 	public String password;
 }

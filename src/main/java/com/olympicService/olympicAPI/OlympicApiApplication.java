@@ -8,13 +8,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class OlympicApiApplication extends SpringBootServletInitializer{
+public class OlympicApiApplication extends SpringBootServletInitializer {
 
 	@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(OlympicApiApplication.class);
-    }
-	
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(OlympicApiApplication.class);
+	}
+ 
 	public static void main(String[] args) {
 		SpringApplication.run(OlympicApiApplication.class, args);
 	}
