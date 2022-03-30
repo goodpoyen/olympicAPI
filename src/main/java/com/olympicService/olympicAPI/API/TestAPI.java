@@ -16,7 +16,7 @@ public class TestAPI {
 		result.put("msg", "success");
 
 		JSONObject reultData = new JSONObject();
-		
+
 		result.put("resultData", reultData);
 
 //		System.out.println(object);

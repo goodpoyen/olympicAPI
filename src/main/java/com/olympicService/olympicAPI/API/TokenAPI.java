@@ -19,11 +19,12 @@ import com.olympicService.olympicAPI.valid.TokenValid;
 public class TokenAPI {
 	@Autowired
 	private WebTokenServiceImpl WebTokenService;
-	
+
 	@PostMapping("/checkRT")
-	public String checkRT(@Valid @RequestBody TokenValid token, BindingResult bindingResult, HttpServletRequest request) {
+	public String checkRT(@Valid @RequestBody TokenValid token, BindingResult bindingResult,
+			HttpServletRequest request) {
 		JSONObject result = new JSONObject();
-		
+
 		String sessionID = request.getSession().toString();
 
 //		System.out.println(sessionID);
@@ -52,11 +53,11 @@ public class TokenAPI {
 
 		return result.toString();
 	}
-	
+
 	@PostMapping("/getAT")
 	public String getAT(@Valid @RequestBody TokenValid token, BindingResult bindingResult, HttpServletRequest request) {
 		JSONObject result = new JSONObject();
-		
+
 		String sessionID = request.getSession().toString();
 
 		if (bindingResult.hasErrors()) {
@@ -69,7 +70,7 @@ public class TokenAPI {
 			if (status) {
 				result.put("code", 200);
 				result.put("msg", "success");
-				
+
 				JSONObject reultData = new JSONObject();
 				reultData.put("act", WebTokenService.getAccessToken(new HashMap<>()));
 

@@ -25,7 +25,7 @@ public class LoginAPI {
 	public String loginAPI(@Valid @RequestBody LoginValid user, BindingResult bindingResult, HttpServletRequest request)
 			throws NoSuchAlgorithmException, JSONException {
 		JSONObject result = new JSONObject();
-		
+
 		String sessionID = request.getSession().toString();
 
 //		System.out.println(sessionID);

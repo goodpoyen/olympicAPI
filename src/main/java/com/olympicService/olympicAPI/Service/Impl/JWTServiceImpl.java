@@ -18,30 +18,24 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
 	public String generateToken(Long EXPIRATION_TIME, String secret, Map<String, Object> claims) {
 
-		return Jwts.builder()
-				.setClaims(claims)
-				.setExpiration(new Date(Instant.now().toEpochMilli() + EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, secret)
-				.compact();
+		return Jwts.builder().setClaims(claims).setExpiration(new Date(Instant.now().toEpochMilli() + EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 	public Claims validateToken(String token, String secret) throws AuthException {
 		try {
 			return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 		} catch (MalformedJwtException e) {
-            throw new AuthException("Invalid JWT token.");
-        }
-        catch (ExpiredJwtException e) {
-            throw new AuthException("Expired JWT token");
-        }
-        catch (UnsupportedJwtException e) {
-            throw new AuthException("Unsupported JWT token");
-        }
-        catch (IllegalArgumentException e) {
-            throw new AuthException("JWT token compact of handler are invalid");
-        }
+			throw new AuthException("Invalid JWT token.");
+		} catch (ExpiredJwtException e) {
+			throw new AuthException("Expired JWT token");
+		} catch (UnsupportedJwtException e) {
+			throw new AuthException("Unsupported JWT token");
+		} catch (IllegalArgumentException e) {
+			throw new AuthException("JWT token compact of handler are invalid");
+		}
 	}
 }
