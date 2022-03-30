@@ -2,6 +2,7 @@ package com.olympicService.olympicAPI.API;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.json.JSONException;
@@ -21,16 +22,20 @@ public class LoginAPI {
 	private LoginServiceImpl LoginServiceImpl;
 
 	@PostMapping("/login")
-	public String loginAPI(@Valid @RequestBody LoginValid user, BindingResult bindingResult)
+	public String loginAPI(@Valid @RequestBody LoginValid user, BindingResult bindingResult, HttpServletRequest request)
 			throws NoSuchAlgorithmException, JSONException {
 		JSONObject result = new JSONObject();
+		
+		String sessionID = request.getSession().toString();
+
+//		System.out.println(sessionID);
 
 		if (bindingResult.hasErrors()) {
 			result.put("code", 501);
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject info = LoginServiceImpl.checkLogin(user.getAccount(), user.getPassword());
+			JSONObject info = LoginServiceImpl.checkLogin(user.getAccount(), user.getPassword(), sessionID);
 
 			if (info.getBoolean("status")) {
 				result.put("code", 200);

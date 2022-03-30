@@ -6,6 +6,6 @@ import org.json.JSONObject;
 
 public interface LoginService {
 
-	public JSONObject checkLogin(String account, String password) throws NoSuchAlgorithmException;
+	public JSONObject checkLogin(String account, String password, String SessionID) throws NoSuchAlgorithmException;
 
 }

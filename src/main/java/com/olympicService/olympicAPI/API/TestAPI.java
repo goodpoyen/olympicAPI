@@ -9,10 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestAPI {
 
 	@PostMapping("/test")
-	JSONObject newEmployee(@RequestBody String data) {
-		JSONObject object = new JSONObject(data);
+	String newEmployee(@RequestBody String data) {
+		JSONObject result = new JSONObject(data);
 
-		System.out.println(object);
-		return object;
+		result.put("code", 400);
+		result.put("msg", "success");
+
+		JSONObject reultData = new JSONObject();
+		
+		result.put("resultData", reultData);
+
+//		System.out.println(object);
+		return result.toString();
 	}
 }
