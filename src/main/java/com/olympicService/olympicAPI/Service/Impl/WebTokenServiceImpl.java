@@ -7,12 +7,14 @@ import javax.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.olympicService.olympicAPI.Service.WebTokenService;
+
 import io.jsonwebtoken.Claims;
 
 @Service
-public class WebTokenService {
+public class WebTokenServiceImpl implements WebTokenService {
 	@Autowired
-	private JWTService JWTService;
+	private JWTServiceImpl JWTService;
 
 	private String secret = "-555018516626007488A";
 

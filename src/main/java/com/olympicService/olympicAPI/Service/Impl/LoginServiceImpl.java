@@ -19,7 +19,7 @@ public class LoginServiceImpl implements LoginService {
 	private AES256ServiceImpl AES256ServiceImpl;
 	
 	@Autowired
-	private WebTokenService WebTokenService;
+	private WebTokenServiceImpl WebTokenService;
 	
 	@Autowired
 	private Tool Tool;

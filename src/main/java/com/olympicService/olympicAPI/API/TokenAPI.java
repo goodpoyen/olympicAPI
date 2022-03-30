@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.olympicService.olympicAPI.Service.Impl.WebTokenService;
+import com.olympicService.olympicAPI.Service.Impl.WebTokenServiceImpl;
 import com.olympicService.olympicAPI.valid.TokenValid;
 
 @RestController
 public class TokenAPI {
 	@Autowired
-	private WebTokenService WebTokenService;
+	private WebTokenServiceImpl WebTokenService;
 	
 	@PostMapping("/checkRT")
 	public String checkRT(@Valid @RequestBody TokenValid token, BindingResult bindingResult, HttpServletRequest request) {

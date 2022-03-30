@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.olympicService.olympicAPI.Service.Impl.AES256ServiceImpl;
-import com.olympicService.olympicAPI.Service.Impl.JWTService;
+import com.olympicService.olympicAPI.Service.Impl.JWTServiceImpl;
 
 @RestController
 public class TestController {
@@ -13,7 +13,7 @@ public class TestController {
 	private AES256ServiceImpl AES256ServiceImpl;
 
 	@Autowired
-	private JWTService JWTService;
+	private JWTServiceImpl JWTService;
 
 	private String secret = "-555018516626007488A";
 

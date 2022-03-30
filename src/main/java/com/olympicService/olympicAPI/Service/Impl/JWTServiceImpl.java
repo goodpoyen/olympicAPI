@@ -8,6 +8,8 @@ import javax.security.auth.message.AuthException;
 
 import org.springframework.stereotype.Service;
 
+import com.olympicService.olympicAPI.Service.JWTService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Service
-public class JWTService {
+public class JWTServiceImpl implements JWTService{
 	public String generateToken(Long EXPIRATION_TIME, String secret, Map<String, Object> claims) {
 
 		return Jwts.builder()
