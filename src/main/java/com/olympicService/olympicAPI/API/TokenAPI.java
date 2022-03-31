@@ -27,7 +27,7 @@ public class TokenAPI {
 
 		String sessionID = request.getSession().toString();
 
-//		System.out.println(sessionID);
+		System.out.println(sessionID);
 
 		if (bindingResult.hasErrors()) {
 			result.put("code", 501);

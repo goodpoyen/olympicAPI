@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <springProperty scpoe="context" name="logindir" source="log.loginFile" />
+    <springProperty scpoe="context" name="apLogdir" source="log.apFile" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="APlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${apLogdir}APOlympic.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${apLogdir}APOlympic.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+        	<charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="LoginLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logindir}login.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logindir}login.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+        	<charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+	
+	<springProfile name="dev,sit,prod">
+	    <root level="info">
+	        <appender-ref ref="APlog" />
+	        <appender-ref ref="STDOUT" />
+	    </root>
+	    <logger name="loginLog" level="info" additivity="false">
+	    	<appender-ref ref="LoginLog" />
+	    </logger>
+    </springProfile>
+</configuration>

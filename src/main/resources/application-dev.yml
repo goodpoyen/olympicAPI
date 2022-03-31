@@ -1,3 +1,7 @@
+log:
+  loginFile: C:\devLog\login\
+  apFile: C:\devLog\apLog\
+
 spring:
   datasource:
     url: jdbc:mysql://140.122.250.131/sitOlympic?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true

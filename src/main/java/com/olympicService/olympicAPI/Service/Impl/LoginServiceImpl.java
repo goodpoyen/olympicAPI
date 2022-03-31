@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,17 @@ public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private AdminUsersRepository AdminUsersRepository;
+	
+	private Logger logger = LoggerFactory.getLogger("loginLog");
 
 	public JSONObject checkLogin(String account, String password, String SessionID) throws NoSuchAlgorithmException {
 		JSONObject user = new JSONObject();
+		JSONObject log = new JSONObject();
+		String status = "";
+
+		log.put("action", "login");
+		log.put("account", account);
+		log.put("SessionID", SessionID);
 
 		AES256ServiceImpl.setKey("uBdUx82vPHkDKb284d7NkjFoNcKWBuka", "c558Gq0YQK2QUlMc");
 
@@ -49,11 +59,18 @@ public class LoginServiceImpl implements LoginService {
 			user.put("ret", WebTokenService.getReflashToken(claims));
 			user.put("act", WebTokenService.getAccessToken(new HashMap<>()));
 
+			status = "Success";
+
 //			System.out.println(WebTokenService.encodeReflashToken(user.get("ret").toString(), SessionID));
 //			System.out.println(WebTokenService.encodeAccessToken(user.get("act").toString()));
 		} else {
 			user.put("status", false);
+			status = "Fail";
 		}
+
+		log.put("status", status);
+
+		logger.info(log.toString());
 
 		return user;
 	}
