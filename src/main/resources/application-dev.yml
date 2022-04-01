@@ -1,6 +1,6 @@
 log:
-  loginFile: C:\devLog\login\
-  apFile: C:\devLog\apLog\
+  loginFile: C:\workingSpace\login\
+  apFile: C:\workingSpace\apLog\
 
 spring:
   datasource:
