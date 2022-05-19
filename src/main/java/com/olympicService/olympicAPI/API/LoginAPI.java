@@ -14,10 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.olympicService.olympicAPI.Service.Impl.LoginServiceImpl;
+import com.olympicService.olympicAPI.Service.Impl.WebTokenServiceImpl;
 import com.olympicService.olympicAPI.valid.LoginValid;
+import com.olympicService.olympicAPI.valid.TokenValid;
 
 @RestController
 public class LoginAPI {
+	@Autowired
+	private WebTokenServiceImpl WebTokenService;
+	
 	@Autowired
 	private LoginServiceImpl LoginServiceImpl;
 
@@ -27,8 +32,6 @@ public class LoginAPI {
 		JSONObject result = new JSONObject();
 
 		String sessionID = request.getSession().toString();
-
-		System.out.println(sessionID);
 
 		if (bindingResult.hasErrors()) {
 			result.put("code", 501);
@@ -43,16 +46,49 @@ public class LoginAPI {
 
 				JSONObject reultData = new JSONObject();
 
-				reultData.put("id", info.get("id"));
-				reultData.put("level", info.get("level"));
 				reultData.put("ret", info.get("ret"));
 				reultData.put("act", info.get("act"));
+				reultData.put("level", info.get("level"));
+				reultData.put("olympic", info.get("olympic"));
 
 				result.put("resultData", reultData);
-
 			} else {
 				result.put("code", 201);
 				result.put("msg", "fail");
+				result.put("resultData", new JSONObject());
+			}
+		}
+
+		return result.toString();
+	}
+	
+	@PostMapping("/login/user")
+	public String getuser(@Valid @RequestBody TokenValid user, BindingResult bindingResult)
+			throws NoSuchAlgorithmException, JSONException {
+		JSONObject result = new JSONObject();
+
+		if (bindingResult.hasErrors()) {
+			result.put("code", 501);
+			result.put("msg", "param_error");
+			result.put("resultData", new JSONObject());
+		} else {
+			JSONObject checkToken = WebTokenService.encodeAccessToken(user.getT());
+//			System.out.println(checkToken);
+			if (checkToken.getBoolean("status")) {
+				JSONObject userData = LoginServiceImpl.getuser(checkToken.getString("account"));
+//				System.out.println(userData);
+				result.put("code", 200);
+				result.put("msg", "success");
+
+				JSONObject reultData = new JSONObject();
+
+				reultData.put("olympic", userData.get("olympic"));
+				reultData.put("level", userData.get("level"));
+
+				result.put("resultData", reultData);
+			} else {
+				result.put("code", 400);
+				result.put("msg", "token_fail");
 				result.put("resultData", new JSONObject());
 			}
 		}

@@ -11,20 +11,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "admin_users")
+@Table(name = "school_users")
 @Data
 @NoArgsConstructor
-public class AdminUsers {
+public class SchoolUsers {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ad_id")
-	public Integer adId;
+	@Column(name = "u_id")
+	public Integer uId;
 
 	@Column(name = "olympic")
 	public String olympic;
 
-	@Column(name = "level")
-	public String level;
+	@Column(name = "status")
+	public String status;
+
+	@Column(name = "school_number")
+	public String schoolNumber;
 
 	@Column(name = "name")
 	public String name;
@@ -32,18 +35,15 @@ public class AdminUsers {
 	@Column(name = "email")
 	public String email;
 
-	@Column(name = "password")
-	public String password;
+	@Column(name = "tel")
+	public String tel;
 
 	@Column(name = "creater")
 	public String creater;
 
-	@Column(name = "status")
-	public String status;
-	
 	@Column(name = "createday")
 	public String createday;
-	
+
 	@Column(name = "modifyday")
 	public String modifyday;
 }

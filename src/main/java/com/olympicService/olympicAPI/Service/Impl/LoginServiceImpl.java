@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private AdminUsersRepository AdminUsersRepository;
-	
+
 	private Logger logger = LoggerFactory.getLogger("loginLog");
 
 	public JSONObject checkLogin(String account, String password, String SessionID) throws NoSuchAlgorithmException {
@@ -47,22 +47,26 @@ public class LoginServiceImpl implements LoginService {
 		password = Tool.getMD5(password);
 
 		AdminUsers AdminUsers = AdminUsersRepository.findByEmailAndPassword(account, password);
+		
+//		System.out.println(AdminUsers);
 
 		Map<String, Object> claims = new HashMap<>();
 
-		claims.put("sessionID", SessionID);
-
 		if (AdminUsers != null) {
+			claims.put("account", account);
+			claims.put("level", AdminUsers.getLevel());
+			claims.put("olympic", AdminUsers.getOlympic());
+
 			user.put("status", true);
-			user.put("id", AdminUsers.getAdId());
-			user.put("level", AdminUsers.getLevel());
+			claims.put("sessionID", SessionID);
 			user.put("ret", WebTokenService.getReflashToken(claims));
-			user.put("act", WebTokenService.getAccessToken(new HashMap<>()));
+			claims.remove("sessionID");
+			user.put("act", WebTokenService.getAccessToken(claims));
+			
+			user.put("level", AdminUsers.getLevel());
+			user.put("olympic", AdminUsers.getOlympic());
 
 			status = "Success";
-
-//			System.out.println(WebTokenService.encodeReflashToken(user.get("ret").toString(), SessionID));
-//			System.out.println(WebTokenService.encodeAccessToken(user.get("act").toString()));
 		} else {
 			user.put("status", false);
 			status = "Fail";
@@ -72,6 +76,17 @@ public class LoginServiceImpl implements LoginService {
 
 		logger.info(log.toString());
 
+		return user;
+	}
+	
+	public JSONObject getuser(String account) {
+		JSONObject user = new JSONObject();
+		
+		AdminUsers AdminUsers = AdminUsersRepository.findByEmail(account);
+		
+		user.put("olympic", AdminUsers.getOlympic());
+		user.put("level", AdminUsers.getLevel());
+		
 		return user;
 	}
 }

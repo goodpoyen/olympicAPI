@@ -1,6 +1,7 @@
 package com.olympicService.olympicAPI.API;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.olympicService.olympicAPI.DAO.Entity.AdminUsers;
 import com.olympicService.olympicAPI.Service.Impl.WebTokenServiceImpl;
 import com.olympicService.olympicAPI.valid.TokenValid;
 
@@ -27,27 +29,47 @@ public class TokenAPI {
 
 		String sessionID = request.getSession().toString();
 
-		System.out.println(sessionID);
-
 		if (bindingResult.hasErrors()) {
 			result.put("code", 501);
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			Boolean status = WebTokenService.encodeReflashToken(token.T, sessionID);
+			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID);
 
-			if (status) {
+			if (checkToken.getBoolean("status")) {
 				result.put("code", 200);
 				result.put("msg", "success");
-
-				JSONObject reultData = new JSONObject();
-
-				result.put("resultData", reultData);
+				result.put("resultData", new JSONObject());
 
 			} else {
-				result.put("code", 201);
-				result.put("msg", "fail");
-				result.put("resultData", new JSONObject());
+				if (checkToken.getBoolean("change")) {
+					result.put("code", 401);
+					result.put("msg", "token_change");
+					
+					AdminUsers AdminUsers = WebTokenService.getUser(checkToken.getString("account"));
+					
+					Map<String, Object> claims = new HashMap<>();
+					
+					claims.put("account", AdminUsers.getEmail());
+					claims.put("level", AdminUsers.getLevel());
+					claims.put("olympic", AdminUsers.getOlympic());
+					
+					JSONObject reultData = new JSONObject();
+					
+					claims.put("sessionID", sessionID);
+					reultData.put("ret", WebTokenService.getReflashToken(claims));
+					claims.remove("sessionID");
+					reultData.put("act", WebTokenService.getAccessToken(claims));
+					
+					reultData.put("level", AdminUsers.getLevel());
+					reultData.put("olympic", AdminUsers.getOlympic());
+					
+					result.put("resultData", reultData);
+				}else {
+					result.put("code", 400);
+					result.put("msg", "token_fail");
+					result.put("resultData", new JSONObject());
+				}
 			}
 		}
 
@@ -65,22 +87,29 @@ public class TokenAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			Boolean status = WebTokenService.encodeReflashToken(token.T, sessionID);
+			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID);
 
-			if (status) {
+			if (checkToken.getBoolean("status")) {
 				result.put("code", 200);
 				result.put("msg", "success");
+				
+				Map<String, Object> claims = new HashMap<>();
+				
+				claims.put("account", checkToken.get("account"));
+				claims.put("level", checkToken.get("level"));
+				claims.put("olympic",checkToken.get("olympic"));
 
 				JSONObject reultData = new JSONObject();
-				reultData.put("act", WebTokenService.getAccessToken(new HashMap<>()));
+				reultData.put("act", WebTokenService.getAccessToken(claims));
 
 				result.put("resultData", reultData);
 
 			} else {
-				result.put("code", 201);
-				result.put("msg", "fail");
+				result.put("code", 400);
+				result.put("msg", "token_fail");
 				result.put("resultData", new JSONObject());
 			}
+			
 		}
 
 		return result.toString();
