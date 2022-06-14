@@ -1,23 +1,15 @@
 package com.olympicService.olympicAPI.Controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.olympicService.olympicAPI.DAO.Repository.SchoolUsersRepository;
 import com.olympicService.olympicAPI.Service.Impl.AES256ServiceImpl;
+import com.olympicService.olympicAPI.Service.Impl.ClassListDownloadImpl;
+import com.olympicService.olympicAPI.Service.Impl.ExamTicketDownloadImpl;
 import com.olympicService.olympicAPI.Service.Impl.JWTServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.SchoolUsersServiceImpl;
-import com.olympicService.olympicAPI.Service.Impl.PDFServiceImpl;
 
 @RestController
 public class TestController {
@@ -28,15 +20,18 @@ public class TestController {
 	private JWTServiceImpl JWTService;
 
 	private String secret = "-555018516626007488A";
-	
+
 	@Autowired
 	private SchoolUsersRepository SchoolUsersRepository;
-	
+
 	@Autowired
 	private SchoolUsersServiceImpl SchoolUsersServiceImpl;
-	
+
 	@Autowired
-	private PDFServiceImpl PDFServiceImpl;
+	private ExamTicketDownloadImpl ExamTicketDownloadImpl;
+
+	@Autowired
+	private ClassListDownloadImpl ClassListDownloadImpl;
 
 	@GetMapping("/test")
 	public String test() throws Exception {
@@ -49,10 +44,10 @@ public class TestController {
 //		
 //		System.out.println(a);
 //		System.out.println(JWTService.validateToken(a, "olympic", secret));
-		
+
 //		JSONArray signupColumns = SchoolUsersServiceImpl.getSchoolUsers();
 //		System.out.println(signupColumns);
-		
+
 //		Map<String, Object> data = new HashMap<>();//要插入的数据
 //        data.put("admitCart", "TOI2022AB01003");
 //        data.put("id", "A1356");
@@ -81,8 +76,10 @@ public class TestController {
 //        
 //        pdfStamper.setFormFlattening(true);
 //        pdfStamper.close();
-		
-		PDFServiceImpl.test();
+
+		ExamTicketDownloadImpl.test();
+
+		ClassListDownloadImpl.test();
 
 		return "OK";
 	}

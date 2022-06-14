@@ -27,12 +27,15 @@ import com.itextpdf.text.pdf.parser.ImageRenderInfo;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
+import com.olympicService.olympicAPI.Service.ExamTicketDownload;
 
 @Service
-public class PDFServiceImpl {
-	private static final float IAMGE_HEIGHT = 180f; 
-    private static final float IAMGE_WIDTH = 180f;
-    
+public class ExamTicketDownloadImpl implements ExamTicketDownload {
+//	private static final float IAMGE_HEIGHT = 150f;
+//	private static final float IAMGE_WIDTH = 150f;
+	private static final float IAMGE_HEIGHT = 80f;
+	private static final float IAMGE_WIDTH = 80f;
+
 	public void test() {
 		File file = new File("C:\\workingSpace\\tempalte.pdf");
 		if (file != null && file.exists()) {
@@ -79,28 +82,27 @@ public class PDFServiceImpl {
 
 			File file = new File(filePath + filename);
 
-//			BaseFont baseFont = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", false);
 			BaseFont baseFont = BaseFont.createFont("MHei-Medium", "UniCNS-UCS2-H", BaseFont.EMBEDDED);
 
 			Font font = new Font(baseFont);
 			stamper = new PdfStamper(reader, new FileOutputStream(file));
-			
 
 			for (int i = 1; i <= reader.getNumberOfPages(); i++) {
 				PdfContentByte over = stamper.getOverContent(i);
 				ColumnText columnText = new ColumnText(over);
 				if (i == 1) {
-					writeData(tpeHtcxyw, columnText, font, "TOI2022AB010003", "准考證號碼");
-					writeData(tpeHtcxyw, columnText, font, "A1256", "識別碼");
-					writeData(tpeHtcxyw, columnText, font, "王曉明", "姓名");
-					writeData(tpeHtcxyw, columnText, font, "台師大", "考區");
-					writeData(tpeHtcxyw, columnText, font, "B101", "教室");
-					writeData(tpeHtcxyw, columnText, font, "台北市大安區", "地址");
-					writeData(tpeHtcxyw, columnText, font, "2022/04/30 09:30", "選拔時間");
-					
+					writeData(tpeHtcxyw, columnText, font, "2022年中華民國資訊奧林匹亞競賽", "考試項目");
+					writeData(tpeHtcxyw, columnText, font, "桃竹區–桃園市立武陵高級中等學校", "考區");
+					writeData(tpeHtcxyw, columnText, font, "330桃園市桃園區中山路889號", "校址");
+					writeData(tpeHtcxyw, columnText, font, "2021年11月6日(六) 上午09:30~11:30", "時間");
+					writeData(tpeHtcxyw, columnText, font, "A21020135", "准考證號碼");
+					writeData(tpeHtcxyw, columnText, font, "第01試場 / 第35座位", "試場及座位");
+					writeData(tpeHtcxyw, columnText, font, "李亞明", "考生姓名");
+					writeData(tpeHtcxyw, columnText, font, "H1234", "辨識碼");
+
 				}
 			}
-			
+
 			waterMarkByImg(reader, stamper, "C://workingSpace/logo.png");
 			return file;
 		} catch (Exception e) {
@@ -119,9 +121,10 @@ public class PDFServiceImpl {
 		}
 	}
 
-	public void writeData (byte[] tpeHtcxyw, ColumnText columnText, Font font, String data, String key) throws FileNotFoundException, DocumentException, IOException {
+	public void writeData(byte[] tpeHtcxyw, ColumnText columnText, Font font, String data, String key)
+			throws FileNotFoundException, DocumentException, IOException {
 		float[] po = getCoordinate(key, tpeHtcxyw);
-		
+
 		if (po[0] == 1.00f) {
 			columnText.setSimpleColumn((float) 170.332, po[2] - 9f, 500, 0);
 
@@ -132,48 +135,49 @@ public class PDFServiceImpl {
 			columnText.go();
 		}
 	}
-	
+
 	public void waterMarkByImg(PdfReader reader, PdfStamper stamper, String logoPath) throws Exception {
-        int pageSize = reader.getNumberOfPages();
+		int pageSize = reader.getNumberOfPages();
 
-        try {
-            for (int i = 1; i <= pageSize; i++) {
-                PdfContentByte under = stamper.getUnderContent(i);
-                PdfGState gs = new PdfGState();
-                Image img = Image.getInstance(logoPath);
-                gs.setFillOpacity(0.5f);
-                under.setGState(gs);
-                img.scaleAbsolute(IAMGE_WIDTH, IAMGE_HEIGHT);
-                img.setAbsolutePosition(200, 520);
-                under.addImage(img);
-            }
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            stamper.close();
-            reader.close();
-        }
+		try {
+			for (int i = 1; i <= pageSize; i++) {
+				PdfContentByte under = stamper.getUnderContent(i);
+				PdfGState gs = new PdfGState();
+				Image img = Image.getInstance(logoPath);
+				gs.setFillOpacity(0.5f);
+				under.setGState(gs);
+				img.scaleAbsolute(IAMGE_WIDTH, IAMGE_HEIGHT);
+//				img.setAbsolutePosition(400, 430);
+				img.setAbsolutePosition(50, 725);
+				under.addImage(img);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			stamper.close();
+			reader.close();
+		}
 	}
-	
-	public void waterMarkByWord (PdfStamper stamper, BaseFont baseFont, int page, String key) {
-		PdfContentByte under;
-        Rectangle pageRect = null;
-		pageRect = stamper.getReader().getPageSizeWithRotation(page);
-        float x = pageRect.getWidth() / 3 - 50;
-        float y = pageRect.getHeight() / 2 - 20;
 
-        under = stamper.getOverContent(page);
-        under.saveState();
-        PdfGState gs = new PdfGState();
-        gs.setFillOpacity(0.3f);
-        under.setGState(gs);
-        under.beginText();
-        under.setFontAndSize(baseFont, 45);
-        under.setColorFill(BaseColor.RED);
-        under.showTextAligned(Element.ALIGN_LEFT, key, x, y, 45);
-        under.endText();
-        under.setLineWidth(1f);
-        under.stroke();
+	public void waterMarkByWord(PdfStamper stamper, BaseFont baseFont, int page, String key) {
+		PdfContentByte under;
+		Rectangle pageRect = null;
+		pageRect = stamper.getReader().getPageSizeWithRotation(page);
+		float x = pageRect.getWidth() / 3 - 50;
+		float y = pageRect.getHeight() / 2 - 20;
+
+		under = stamper.getOverContent(page);
+		under.saveState();
+		PdfGState gs = new PdfGState();
+		gs.setFillOpacity(0.3f);
+		under.setGState(gs);
+		under.beginText();
+		under.setFontAndSize(baseFont, 45);
+		under.setColorFill(BaseColor.RED);
+		under.showTextAligned(Element.ALIGN_LEFT, key, x, y, 45);
+		under.endText();
+		under.setLineWidth(1f);
+		under.stroke();
 	}
 
 	public float[] getCoordinate(String signKey, byte[] pdf) {
