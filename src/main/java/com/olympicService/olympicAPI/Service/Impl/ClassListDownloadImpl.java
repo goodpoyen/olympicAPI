@@ -1,18 +1,26 @@
 package com.olympicService.olympicAPI.Service.Impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.springframework.stereotype.Service;
 
@@ -20,33 +28,38 @@ import com.olympicService.olympicAPI.Service.ClassListDownload;
 
 @Service
 public class ClassListDownloadImpl implements ClassListDownload {
-	public void test() throws IOException {
+	public void test() throws IOException, InvalidFormatException {
 		List<Map<String, String>> listData = testData();
 
 		XWPFDocument document = new XWPFDocument();
 
-		// Write the Document in file system
-		FileOutputStream out = new FileOutputStream(new File("C:\\workingSpace\\createdocument.docx"));
+		setPageSize(document);
 
-		classTag(document, "2022年資訊奧林匹亞競賽", "第1試場", "A21010101", "A21010109");
+		FileOutputStream out = new FileOutputStream(new File("C:\\workingSpace\\createdocument.docx"));
+		
+		// 教室標示
+		classTag(document, "2022年資訊奧林匹亞競賽", "第1試場", "C://workingSpace/logo.png", "A21010101", "A21010109");
 
 		// 教室考生名單
 		XWPFTable table = document.createTable();
 
-		table.setWidth(8300);
+		table.setWidth(10700);
 
-		setClassListTitle(table, "臺灣師範大學 第 1 試場");
+		setClassListTitle(table, "臺灣師範大學 第 1 試場", "C://workingSpace/logo.png");
 
 		setClassListHeader(table);
 
 		setClassListData(table, document, listData);
 
+		// 教室座位表
+		setSeatMap(table, document, listData, "第 1 試場", "C://workingSpace/logo.png");
+
 		// 教室點名單
 		table = document.createTable();
 
-		table.setWidth(8300);
+		table.setWidth(10700);
 
-		setClassCheckTitle(table, "臺灣師範大學 第 1 試場");
+		setClassCheckTitle(table, "臺灣師範大學 第 1 試場", "C://workingSpace/logo.png");
 
 		setClassCheckListHeader(table);
 
@@ -56,20 +69,42 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		out.close();
 	}
 
-	public void classTag(XWPFDocument document, String title, String className, String star, String end) {
+	public void setPageSize(XWPFDocument document) {
+		CTSectPr sectPr = document.getDocument().getBody().addNewSectPr();
+
+		CTPageMar pageMar = sectPr.addNewPgMar();
+
+		pageMar.setLeft(BigInteger.valueOf(720L));
+
+		pageMar.setTop(BigInteger.valueOf(900L));
+
+		pageMar.setRight(BigInteger.valueOf(720L));
+
+		pageMar.setBottom(BigInteger.valueOf(900L));
+	}
+
+	public void classTag(XWPFDocument document, String title, String className, String img, String star, String end)
+			throws InvalidFormatException, IOException {
 		XWPFParagraph paragraph = document.createParagraph();
 		paragraph.setAlignment(ParagraphAlignment.CENTER);
 		XWPFRun run = paragraph.createRun();
 
-		run.setFontSize(36);
+		run.setFontSize(46);
 		run.setBold(true);
 		run.setText(title);
 		run.addBreak();
+
+		String imgFile = img;
+		FileInputStream is = new FileInputStream(imgFile);
 		run.addBreak();
+		run.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(120), Units.toEMU(120));
+
+		is.close();
+
 		run.addBreak();
 		run.addBreak();
 		run = paragraph.createRun();
-		run.setFontSize(48);
+		run.setFontSize(72);
 		run.setBold(true);
 		run.setText(className);
 		run.addBreak();
@@ -83,19 +118,24 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		paragraph2.setPageBreak(true);
 	}
 
-	public void setClassListTitle(XWPFTable table, String title) {
-		table.getRow(0).setHeight(900);
+	public void setClassListTitle(XWPFTable table, String title, String img)
+			throws InvalidFormatException, IOException {
+		XWPFParagraph cellParagraph = null;
 
-		XWPFParagraph cellParagraph = getCellParagraph(table, 0, 0);
+		XWPFRun cellParagraphRun = null;
 
-		XWPFRun cellParagraphRun = setTableWord(table, cellParagraph, 300, 300, 16, true);
-
-		cellParagraphRun.setText(String.valueOf(title));
-
-		table.getRow(0).getCell(0).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
+		cellParagraph = getCellParagraph(table, 0, 0);
+		cellParagraphRun = setTableWord(table, cellParagraph, 250, 250, 16, true);
+		String imgFile = img;
+		FileInputStream is = new FileInputStream(imgFile);
+		cellParagraphRun.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(50), Units.toEMU(50));
+		is.close();
 
 		table.getRow(0).addNewTableCell();
-		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
+		cellParagraph = getCellParagraph(table, 0, 1);
+		cellParagraphRun = setTableWord(table, cellParagraph, 250, 600, 16, true);
+		cellParagraphRun.setText(String.valueOf(title));
+		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
 
 		table.getRow(0).addNewTableCell();
 		table.getRow(0).getCell(2).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
@@ -162,19 +202,80 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		paragraph2.setPageBreak(true);
 	}
 
-	public void setClassCheckTitle(XWPFTable table, String title) {
-		table.getRow(0).setHeight(900);
+	public void setSeatMap(XWPFTable table, XWPFDocument document, List<Map<String, String>> listData, String className,
+			String imp) throws IOException, InvalidFormatException {
+		XWPFParagraph cellParagraph = null;
 
-		XWPFParagraph cellParagraph = getCellParagraph(table, 0, 0);
+		XWPFRun cellParagraphRun = null;
 
-		XWPFRun cellParagraphRun = setTableWord(table, cellParagraph, 300, 300, 16, true);
+		XWPFParagraph paragraph = document.createParagraph();
+		paragraph.setAlignment(ParagraphAlignment.CENTER);
+		XWPFRun run = paragraph.createRun();
 
-		cellParagraphRun.setText(String.valueOf(title));
+		run.setFontSize(46);
+		run.setBold(true);
+		run.setText(className + " 座位表");
+		run.addBreak();
 
-		table.getRow(0).getCell(0).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
+		String imgFile = imp;
+		FileInputStream is = new FileInputStream(imgFile);
+		run.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(80), Units.toEMU(80));
+		run.addBreak();
+		run.addBreak();
+		is.close();
+
+		table = document.createTable(7, 8);
+
+		table.setWidth(10700);
+
+		int count = 0;
+
+		List<XWPFTableRow> rowList = table.getRows();
+		for (int i = 0; i < rowList.size(); i++) {
+			XWPFTableRow infoTableRow = rowList.get(i);
+			rowList.get(i).setHeight(1200);
+			List<XWPFTableCell> cellList = infoTableRow.getTableCells();
+			for (int j = 0; j < cellList.size(); j++) {
+				cellParagraph = cellList.get(j).getParagraphArray(0);
+				cellParagraph.setAlignment(ParagraphAlignment.CENTER);
+				cellParagraphRun = cellParagraph.createRun();
+				cellParagraph.setSpacingBefore(230);
+				cellParagraphRun.setFontSize(12);
+				cellParagraphRun.setBold(true);
+				if (count < listData.size()) {
+					cellParagraphRun.setText(listData.get(count).get("id"));
+					cellParagraphRun.addBreak();
+					cellParagraphRun.setText(listData.get(count).get("name"));
+				}
+
+				count++;
+			}
+
+		}
+
+		count = 0;
+		XWPFParagraph paragraph2 = document.createParagraph();
+		paragraph2.setPageBreak(true);
+	}
+
+	public void setClassCheckTitle(XWPFTable table, String title, String img)
+			throws InvalidFormatException, IOException {
+		XWPFParagraph cellParagraph = null;
+
+		XWPFRun cellParagraphRun = null;
+
+		cellParagraph = getCellParagraph(table, 0, 0);
+		cellParagraphRun = setTableWord(table, cellParagraph, 250, 250, 16, true);
+		String imgFile = img;
+		FileInputStream is = new FileInputStream(imgFile);
+		cellParagraphRun.addPicture(is, XWPFDocument.PICTURE_TYPE_JPEG, imgFile, Units.toEMU(50), Units.toEMU(50));
+		is.close();
 
 		table.getRow(0).addNewTableCell();
-		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
+		cellParagraph = getCellParagraph(table, 0, 1);
+		cellParagraphRun = setTableWord(table, cellParagraph, 250, 600, 16, true);
+		cellParagraphRun.setText(String.valueOf(title));
+		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
 
 		table.getRow(0).addNewTableCell();
 		table.getRow(0).getCell(2).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);

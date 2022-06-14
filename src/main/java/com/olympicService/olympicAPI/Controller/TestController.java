@@ -77,7 +77,7 @@ public class TestController {
 //        pdfStamper.setFormFlattening(true);
 //        pdfStamper.close();
 
-		ExamTicketDownloadImpl.test();
+//		ExamTicketDownloadImpl.test();
 
 		ClassListDownloadImpl.test();
 
