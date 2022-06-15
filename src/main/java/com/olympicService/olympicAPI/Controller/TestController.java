@@ -10,6 +10,7 @@ import com.olympicService.olympicAPI.Service.Impl.ClassListDownloadImpl;
 import com.olympicService.olympicAPI.Service.Impl.ExamTicketDownloadImpl;
 import com.olympicService.olympicAPI.Service.Impl.JWTServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.SchoolUsersServiceImpl;
+import com.olympicService.olympicAPI.Service.Impl.SeatTagDownloadImpl;
 
 @RestController
 public class TestController {
@@ -32,6 +33,10 @@ public class TestController {
 
 	@Autowired
 	private ClassListDownloadImpl ClassListDownloadImpl;
+	
+	@Autowired
+	private SeatTagDownloadImpl SeatTagDownloadImpl;
+
 
 	@GetMapping("/test")
 	public String test() throws Exception {
@@ -80,6 +85,8 @@ public class TestController {
 //		ExamTicketDownloadImpl.test();
 
 		ClassListDownloadImpl.test();
+		
+		SeatTagDownloadImpl.test();
 
 		return "OK";
 	}
