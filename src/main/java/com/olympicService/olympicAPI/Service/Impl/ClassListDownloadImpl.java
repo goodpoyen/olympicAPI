@@ -418,7 +418,8 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		data.put("i", "Q1935");
 		data.put("name", "陳致嘉");
 		listData.add(8, data);
-		
+
+		data = new HashMap<>();
 		data.put("id", "A22010110");
 		data.put("i", "A2325");
 		data.put("name", "劉思源");
@@ -471,7 +472,8 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		data.put("i", "Q1935");
 		data.put("name", "唐偉鴻");
 		listData.add(17, data);
-		
+
+		data = new HashMap<>();
 		data.put("id", "A22010119");
 		data.put("i", "A2325");
 		data.put("name", "吳少夫");
@@ -525,6 +527,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		data.put("name", "陳蓮華");
 		listData.add(26, data);
 		
+		data = new HashMap<>();
 		data.put("id", "A22010128");
 		data.put("i", "A2325");
 		data.put("name", "陳毅鴻");

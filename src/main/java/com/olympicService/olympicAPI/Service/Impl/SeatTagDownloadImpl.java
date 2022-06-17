@@ -1,18 +1,19 @@
 package com.olympicService.olympicAPI.Service.Impl;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ooxml.POIXMLDocument;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlOptions;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
@@ -25,6 +26,8 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 	public int count = 0;
 
 	public void test() throws Exception {
+		this.count = 0;
+		
 		List<Map<String, String>> listData = testData();
 
 		List<XWPFDocument> xwpfDocuments = new ArrayList<XWPFDocument>();
@@ -34,57 +37,50 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		}
 
 		XWPFDocument outDocument = createNewFile(xwpfDocuments);
-
+		
 		FileOutputStream outStream = null;
-		outStream = new FileOutputStream("C:\\workingSpace\\seatTagTest.docx");
+		int r = (int)(Math.random()*100);
+		outStream = new FileOutputStream("C:\\workingSpace\\seatTagTest" + r + ".docx");
 		outDocument.write(outStream);
 		outStream.close();
 	}
 
 	public List<XWPFDocument> setPageData(List<XWPFDocument> xwpfDocuments, List<Map<String, String>> listData)
 			throws IOException {
-		XWPFDocument document = new XWPFDocument(POIXMLDocument.openPackage("C:\\workingSpace\\seatTag.docx"));
+		InputStream is = new FileInputStream("C:\\workingSpace\\seatTag3.docx");
+		XWPFDocument document = new XWPFDocument(is);
+
 
 		List<XWPFTable> tables = document.getTables();
-
+		
 		for (XWPFTable tbl : tables) {
-			for (XWPFTableRow row : tbl.getRows()) {
-				for (XWPFTableCell cell : row.getTableCells()) {
-					for (XWPFParagraph p : cell.getParagraphs()) {
-						for (XWPFRun r : p.getRuns()) {
-							String text = r.getText(0);
-							if (text != null) {
-								if (this.count < listData.size()) {
-									text = text.replace("title", "2022年資訊奧林匹亞競賽");
-									r.setFontSize(12);
-									r.setText(text, 0);
-
-									text = text.replace("准考證號碼", listData.get(this.count).get("id"));
-									r.setFontSize(12);
-									r.setText(text, 0);
-
-									text = text.replace("姓名", listData.get(this.count).get("name"));
-									r.setFontSize(12);
-									r.setText(text, 0);
-								} else {
-									text = text.replace("title", "");
-									r.setText(text, 0);
-
-									text = text.replace("准考證號碼", "");
-									r.setText(text, 0);
-
-									text = text.replace("姓名", "");
-									r.setText(text, 0);
-								}
-							}
-						}
+			for (int i = 0; i < tbl.getRows().size(); i++) {
+				XWPFTableRow row = tbl.getRow(i);
+				for (int j = 0; j < row.getTableCells().size(); j++) {
+					if (this.count < listData.size()) {
+						XWPFParagraph cellParagraph = tbl.getRow(i).getCell(j).getParagraphArray(0);
+						cellParagraph.setAlignment(ParagraphAlignment.CENTER);
+						XWPFRun cellParagraphRun = cellParagraph.createRun();
+						cellParagraphRun.setFontSize(12);
+						cellParagraphRun.setText(String.valueOf("2022年資訊奧林匹亞競賽"));
+						cellParagraphRun.addBreak();
+						
+						cellParagraph = tbl.getRow(i).getCell(j).getParagraphArray(0);
+						cellParagraphRun = cellParagraph.createRun();
+						cellParagraphRun.addBreak();
+						cellParagraphRun.setBold(true);
+						cellParagraphRun.setText(listData.get(this.count).get("id"));
+						cellParagraphRun.addBreak();
+						cellParagraphRun.setText(listData.get(this.count).get("name"));
 					}
+					
 					this.count++;
 				}
 			}
 		}
 
 		xwpfDocuments.add(document);
+//		is.close();
 
 		return xwpfDocuments;
 	}
@@ -125,6 +121,7 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		CTBody makeBody = CTBody.Factory.parse(prefix + mainPart + addPart + sufix);
 
 		src1Body.set(makeBody);
+//		src2Document.close();
 		return src1Document;
 	}
 
@@ -186,6 +183,7 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		data.put("name", "陳致嘉");
 		listData.add(8, data);
 
+		data = new HashMap<>();
 		data.put("id", "A22010110");
 		data.put("i", "A2325");
 		data.put("name", "劉思源");
@@ -239,6 +237,7 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		data.put("name", "唐偉鴻");
 		listData.add(17, data);
 
+		data = new HashMap<>();
 		data.put("id", "A22010119");
 		data.put("i", "A2325");
 		data.put("name", "吳少夫");
@@ -291,7 +290,8 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		data.put("i", "Q1935");
 		data.put("name", "陳蓮華");
 		listData.add(26, data);
-
+		
+		data = new HashMap<>();
 		data.put("id", "A22010128");
 		data.put("i", "A2325");
 		data.put("name", "陳毅鴻");
