@@ -39,8 +39,7 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		XWPFDocument outDocument = createNewFile(xwpfDocuments);
 		
 		FileOutputStream outStream = null;
-		int r = (int)(Math.random()*100);
-		outStream = new FileOutputStream("C:\\workingSpace\\seatTagTest" + r + ".docx");
+		outStream = new FileOutputStream("C:\\workingSpace\\seatTagTest.docx");
 		outDocument.write(outStream);
 		outStream.close();
 	}
@@ -80,7 +79,6 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		}
 
 		xwpfDocuments.add(document);
-//		is.close();
 
 		return xwpfDocuments;
 	}
@@ -121,7 +119,7 @@ public class SeatTagDownloadImpl implements SeatTagDownload {
 		CTBody makeBody = CTBody.Factory.parse(prefix + mainPart + addPart + sufix);
 
 		src1Body.set(makeBody);
-//		src2Document.close();
+		
 		return src1Document;
 	}
 
