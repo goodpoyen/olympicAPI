@@ -31,10 +31,16 @@ public class OlympicSchedule {
 
 	@Column(name = "end")
 	public String end;
-	
+
 	@Column(name = "rules")
 	public String rules;
-	
+
 	@Column(name = "type")
 	public String type;
+
+	@Column(name = "code_name")
+	public String codeName;
+
+	@Column(name = "year")
+	public String year;
 }

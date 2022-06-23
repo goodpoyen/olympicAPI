@@ -29,7 +29,7 @@ public class ExamArea {
 	@Column(name = "address")
 	public String address;
 	
-	@Column(name = "code")
-	public String code;
+	@Column(name = "code_name")
+	public String codeName;
 
 }

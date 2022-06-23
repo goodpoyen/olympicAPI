@@ -1,5 +1,6 @@
 package com.olympicService.olympicAPI.Controller;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.olympicService.olympicAPI.DAO.Repository.SchoolUsersRepository;
 import com.olympicService.olympicAPI.Service.Impl.AES256ServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.ClassListDownloadImpl;
+import com.olympicService.olympicAPI.Service.Impl.ExamCodeServiceIpml;
 import com.olympicService.olympicAPI.Service.Impl.ExamTicketDownloadImpl;
 import com.olympicService.olympicAPI.Service.Impl.JWTServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.SchoolUsersServiceImpl;
@@ -36,6 +38,10 @@ public class TestController {
 	
 	@Autowired
 	private SeatTagDownloadImpl SeatTagDownloadImpl;
+	
+	@Autowired
+	private ExamCodeServiceIpml ExamCodeServiceIpml;
+	
 
 
 	@GetMapping("/test")
@@ -84,10 +90,12 @@ public class TestController {
 
 //		ExamTicketDownloadImpl.test();
 
-		ClassListDownloadImpl.test();
+//		ClassListDownloadImpl.test();
+//		
+//		SeatTagDownloadImpl.test();
 		
-		SeatTagDownloadImpl.test();
+		JSONObject result = ExamCodeServiceIpml.test();
 
-		return "OK";
+		return result.toString();
 	}
 }
