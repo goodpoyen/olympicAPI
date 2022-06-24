@@ -20,12 +20,6 @@ public class SchoolUsers {
 	@Column(name = "u_id")
 	public Integer uId;
 
-	@Column(name = "olympic")
-	public String olympic;
-
-	@Column(name = "status")
-	public String status;
-
 	@Column(name = "school_number")
 	public String schoolNumber;
 
