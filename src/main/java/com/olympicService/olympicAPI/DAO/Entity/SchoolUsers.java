@@ -31,13 +31,4 @@ public class SchoolUsers {
 
 	@Column(name = "tel")
 	public String tel;
-
-	@Column(name = "creater")
-	public String creater;
-
-	@Column(name = "createday")
-	public String createday;
-
-	@Column(name = "modifyday")
-	public String modifyday;
 }
