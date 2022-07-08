@@ -90,12 +90,12 @@ public class TestController {
 
 //		ExamTicketDownloadImpl.test();
 
-//		ClassListDownloadImpl.test();
+		ClassListDownloadImpl.test();
 //		
 //		SeatTagDownloadImpl.test();
 		
-		JSONObject result = ExamCodeServiceIpml.test();
+//		JSONObject result = ExamCodeServiceIpml.test();
 
-		return result.toString();
+		return "5555";
 	}
 }

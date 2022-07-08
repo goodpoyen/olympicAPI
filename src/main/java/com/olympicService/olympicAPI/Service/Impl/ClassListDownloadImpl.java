@@ -36,7 +36,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		setPageSize(document);
 
 		FileOutputStream out = new FileOutputStream(new File("C:\\workingSpace\\createdocument.docx"));
-		
+
 		// 教室標示
 		classTag(document, "2022年資訊奧林匹亞競賽", "第1試場", "C://workingSpace/logo.png", "A21010101", "A21010109");
 
@@ -124,7 +124,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 
 		XWPFRun cellParagraphRun = null;
 
-		cellParagraph = getCellParagraph(table, 0, 0);
+		cellParagraph = getCellParagraph(table, 0, 0, "0");
 		cellParagraphRun = setTableWord(table, cellParagraph, 250, 250, 16, true);
 		String imgFile = img;
 		FileInputStream is = new FileInputStream(imgFile);
@@ -132,7 +132,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		is.close();
 
 		table.getRow(0).addNewTableCell();
-		cellParagraph = getCellParagraph(table, 0, 1);
+		cellParagraph = getCellParagraph(table, 0, 1, "0");
 		cellParagraphRun = setTableWord(table, cellParagraph, 250, 600, 16, true);
 		cellParagraphRun.setText(String.valueOf(title));
 		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
@@ -148,19 +148,19 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		table.createRow();
 		table.getRow(1).setHeight(500);
 
-		XWPFParagraph cellParagraph = getCellParagraph(table, 1, 0);
+		XWPFParagraph cellParagraph = getCellParagraph(table, 1, 0, "0");
 		XWPFRun cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("准考證號碼"));
 
-		cellParagraph = getCellParagraph(table, 1, 1);
+		cellParagraph = getCellParagraph(table, 1, 1, "600");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("姓名"));
 
-		cellParagraph = getCellParagraph(table, 1, 2);
+		cellParagraph = getCellParagraph(table, 1, 2, "0");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("准考證號碼"));
 
-		cellParagraph = getCellParagraph(table, 1, 3);
+		cellParagraph = getCellParagraph(table, 1, 3, "600");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("姓名"));
 	}
@@ -177,22 +177,22 @@ public class ClassListDownloadImpl implements ClassListDownload {
 			if ((i + 1) % 2 == 0) {
 				row = ((i + 1) / 2) - 1;
 
-				cellParagraph = getCellParagraph(table, row + 2, 2);
+				cellParagraph = getCellParagraph(table, row + 2, 2, "0");
 				cellParagraphRun = setTableWord(table, cellParagraph, 80, 80, 14, true);
 				cellParagraphRun.setText(String.valueOf(listData.get(i).get("id")));
 
-				cellParagraph = getCellParagraph(table, row + 2, 3);
+				cellParagraph = getCellParagraph(table, row + 2, 3, "600");
 				cellParagraphRun = setTableWord(table, cellParagraph, 80, 80, 12, false);
 				cellParagraphRun.setText(String.valueOf(listData.get(i).get("name")));
 			} else {
 				table.createRow();
 				row = ((i + 1) / 2);
 
-				cellParagraph = getCellParagraph(table, row + 2, 0);
+				cellParagraph = getCellParagraph(table, row + 2, 0, "0");
 				cellParagraphRun = setTableWord(table, cellParagraph, 80, 80, 14, true);
 				cellParagraphRun.setText(String.valueOf(listData.get(i).get("id")));
 
-				cellParagraph = getCellParagraph(table, row + 2, 1);
+				cellParagraph = getCellParagraph(table, row + 2, 1, "600");
 				cellParagraphRun = setTableWord(table, cellParagraph, 80, 80, 12, false);
 				cellParagraphRun.setText(String.valueOf(listData.get(i).get("name")));
 			}
@@ -264,7 +264,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 
 		XWPFRun cellParagraphRun = null;
 
-		cellParagraph = getCellParagraph(table, 0, 0);
+		cellParagraph = getCellParagraph(table, 0, 0, "0");
 		cellParagraphRun = setTableWord(table, cellParagraph, 250, 250, 16, true);
 		String imgFile = img;
 		FileInputStream is = new FileInputStream(imgFile);
@@ -272,7 +272,7 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		is.close();
 
 		table.getRow(0).addNewTableCell();
-		cellParagraph = getCellParagraph(table, 0, 1);
+		cellParagraph = getCellParagraph(table, 0, 1, "0");
 		cellParagraphRun = setTableWord(table, cellParagraph, 250, 600, 16, true);
 		cellParagraphRun.setText(String.valueOf(title));
 		table.getRow(0).getCell(1).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
@@ -291,25 +291,25 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		table.createRow();
 		table.getRow(1).setHeight(500);
 
-		XWPFParagraph cellParagraph = getCellParagraph(table, 1, 0);
+		XWPFParagraph cellParagraph = getCellParagraph(table, 1, 0, "2000");
 		XWPFRun cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("准考證號碼"));
 
-		cellParagraph = getCellParagraph(table, 1, 1);
+		cellParagraph = getCellParagraph(table, 1, 1, "2000");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("識別碼"));
 
-		cellParagraph = getCellParagraph(table, 1, 2);
+		cellParagraph = getCellParagraph(table, 1, 2, "2200");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("姓名"));
 
-		cellParagraph = getCellParagraph(table, 1, 3);
+		cellParagraph = getCellParagraph(table, 1, 3, "2500");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		cellParagraphRun.setText(String.valueOf("簽到"));
 
-		cellParagraph = getCellParagraph(table, 1, 4);
+		cellParagraph = getCellParagraph(table, 1, 4, "1000");
 		cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
-		cellParagraphRun.setText(String.valueOf("點名"));
+		cellParagraphRun.setText(String.valueOf("複查"));
 	}
 
 	public void setClassCheckListData(XWPFTable table, XWPFDocument document, List<Map<String, String>> listData) {
@@ -320,17 +320,20 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		for (int i = 0; i < listData.size(); i++) {
 			table.createRow();
 
-			cellParagraph = getCellParagraph(table, i + 2, 0);
+			cellParagraph = getCellParagraph(table, i + 2, 0, "0");
 			cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 			cellParagraphRun.setText(String.valueOf(listData.get(i).get("id")));
 
-			cellParagraph = getCellParagraph(table, i + 2, 1);
+			cellParagraph = getCellParagraph(table, i + 2, 1, "0");
 			cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 			cellParagraphRun.setText(String.valueOf(listData.get(i).get("i")));
 
-			cellParagraph = getCellParagraph(table, i + 2, 2);
+			cellParagraph = getCellParagraph(table, i + 2, 2, "600");
 			cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 			cellParagraphRun.setText(String.valueOf(listData.get(i).get("name")));
+
+			cellParagraph = getCellParagraph(table, i + 2, 3, "0");
+			cellParagraphRun = setTableWord(table, cellParagraph, 100, 100, 16, true);
 		}
 
 		XWPFParagraph paragraph = document.createParagraph();
@@ -342,7 +345,8 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		run.setText("監考人員簽名：______________");
 	}
 
-	public XWPFParagraph getCellParagraph(XWPFTable table, int row, int cell) {
+	public XWPFParagraph getCellParagraph(XWPFTable table, int row, int cell, String cellWidth) {
+		table.getRow(row).getCell(cell).setWidth(cellWidth);
 		XWPFParagraph cellParagraph = table.getRow(row).getCell(cell).getParagraphArray(0);
 		cellParagraph.setAlignment(ParagraphAlignment.CENTER);
 
@@ -366,67 +370,67 @@ public class ClassListDownloadImpl implements ClassListDownload {
 
 		List<Map<String, String>> listData = new ArrayList();
 
-		data.put("id", "A22010101");
+		data.put("id", "A220101001");
 		data.put("i", "A2325");
 		data.put("name", "林亭");
 		listData.add(0, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010102");
+		data.put("id", "A220101002");
 		data.put("i", "T1675");
-		data.put("name", "陳棋閔");
+		data.put("name", "陳棋閔正");
 		listData.add(1, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010103");
+		data.put("id", "A220101003");
 		data.put("i", "F2395");
 		data.put("name", "詹惟涵");
 		listData.add(2, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010104");
+		data.put("id", "A220101004");
 		data.put("i", "F1678");
 		data.put("name", "蔡季霖");
 		listData.add(3, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010105");
+		data.put("id", "A220101005");
 		data.put("i", "A1198");
 		data.put("name", "李岱昇");
 		listData.add(4, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010106");
+		data.put("id", "A220101006");
 		data.put("i", "P1945");
 		data.put("name", "李祐瑋");
 		listData.add(5, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010107");
+		data.put("id", "A220101007");
 		data.put("i", "T1955");
 		data.put("name", "洪冰儒");
 		listData.add(6, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010108");
+		data.put("id", "A220101008");
 		data.put("i", "K2835");
 		data.put("name", "張庭毓");
 		listData.add(7, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010109");
+		data.put("id", "A220101009");
 		data.put("i", "Q1935");
 		data.put("name", "陳致嘉");
 		listData.add(8, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010110");
+		data.put("id", "A220101010");
 		data.put("i", "A2325");
 		data.put("name", "劉思源");
 		listData.add(9, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010111");
+		data.put("id", "A220101011");
 		data.put("i", "T1675");
 		data.put("name", "蔡秉勳");
 		listData.add(10, data);
@@ -438,49 +442,49 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		listData.add(11, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010113");
+		data.put("id", "A220101013");
 		data.put("i", "F1678");
 		data.put("name", "鄭雅文");
 		listData.add(12, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010114");
+		data.put("id", "A220101014");
 		data.put("i", "A1198");
 		data.put("name", "李碩");
 		listData.add(13, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010115");
+		data.put("id", "A220101015");
 		data.put("i", "P1945");
 		data.put("name", "黃駿");
 		listData.add(14, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010116");
+		data.put("id", "A220101016");
 		data.put("i", "T1955");
 		data.put("name", "鄭智元");
 		listData.add(15, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010117");
+		data.put("id", "A220101017");
 		data.put("i", "K2835");
 		data.put("name", "吳致樑");
 		listData.add(16, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010118");
+		data.put("id", "A220101018");
 		data.put("i", "Q1935");
 		data.put("name", "唐偉鴻");
 		listData.add(17, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010119");
+		data.put("id", "A220101019");
 		data.put("i", "A2325");
 		data.put("name", "吳少夫");
 		listData.add(18, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010120");
+		data.put("id", "A220101020");
 		data.put("i", "T1675");
 		data.put("name", "林俞廷");
 		listData.add(19, data);
@@ -492,49 +496,49 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		listData.add(20, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010122");
+		data.put("id", "A220101022");
 		data.put("i", "F1678");
 		data.put("name", "李崇嘉");
 		listData.add(21, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010123");
+		data.put("id", "A220101023");
 		data.put("i", "A1198");
 		data.put("name", "陳柏諺");
 		listData.add(22, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010124");
+		data.put("id", "A220101024");
 		data.put("i", "P1945");
 		data.put("name", "賴韋廷");
 		listData.add(23, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010125");
+		data.put("id", "A220101025");
 		data.put("i", "T1955");
 		data.put("name", "詹雅如");
 		listData.add(24, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010126");
+		data.put("id", "A220101026");
 		data.put("i", "K2835");
 		data.put("name", "林旻葦");
 		listData.add(25, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010127");
+		data.put("id", "A220101027");
 		data.put("i", "Q1935");
 		data.put("name", "陳蓮華");
 		listData.add(26, data);
-		
+
 		data = new HashMap<>();
-		data.put("id", "A22010128");
+		data.put("id", "A220101028");
 		data.put("i", "A2325");
 		data.put("name", "陳毅鴻");
 		listData.add(27, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010129");
+		data.put("id", "A220101029");
 		data.put("i", "T1675");
 		data.put("name", "林妮臻");
 		listData.add(28, data);
@@ -546,37 +550,37 @@ public class ClassListDownloadImpl implements ClassListDownload {
 		listData.add(29, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010131");
+		data.put("id", "A220101031");
 		data.put("i", "F1678");
 		data.put("name", "林麗卿");
 		listData.add(30, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010132");
+		data.put("id", "A220101032");
 		data.put("i", "A1198");
 		data.put("name", "王若竹");
 		listData.add(31, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010133");
+		data.put("id", "A220101033");
 		data.put("i", "P1945");
 		data.put("name", "吳雨樺");
 		listData.add(32, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010134");
+		data.put("id", "A220101034");
 		data.put("i", "T1955");
 		data.put("name", "魏子翔");
 		listData.add(33, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010135");
+		data.put("id", "A220101035");
 		data.put("i", "K2835");
 		data.put("name", "歐陽辰");
 		listData.add(34, data);
 
 		data = new HashMap<>();
-		data.put("id", "A22010136");
+		data.put("id", "A220101036");
 		data.put("i", "Q1935");
 		data.put("name", "郭柏廷");
 		listData.add(35, data);

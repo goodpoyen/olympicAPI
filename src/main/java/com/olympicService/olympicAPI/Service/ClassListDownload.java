@@ -32,7 +32,7 @@ public interface ClassListDownload {
 
 	public void setClassCheckListData(XWPFTable table, XWPFDocument documen, List<Map<String, String>> listData);
 
-	public XWPFParagraph getCellParagraph(XWPFTable table, int row, int cell);
+	public XWPFParagraph getCellParagraph(XWPFTable table, int row, int cell, String cellWidth);
 
 	public XWPFRun setTableWord(XWPFTable table, XWPFParagraph cellParagraph, int SpacingAfter, int SpacingBefore,
 			int FontSize, Boolean Bold);
