@@ -39,7 +39,7 @@ public class AccountAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeAccessToken(accountList.getAT());
+			JSONObject checkToken = WebTokenService.encodeAccessToken(accountList.getAT(), request);
 
 			if (checkToken.getBoolean("status")) {
 				List<AdminUsers> AdminUsersList = AccountServiceImpl.getAccountList();
@@ -73,7 +73,7 @@ public class AccountAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeAccessToken(account.getAT());
+			JSONObject checkToken = WebTokenService.encodeAccessToken(account.getAT(), request);
 
 			if (checkToken.getBoolean("status")) {
 				List<AdminUsers> AdminUsersList = AccountServiceImpl.getAccountList();

@@ -1,6 +1,7 @@
 package com.olympicService.olympicAPI.Controller;
 
-import org.json.JSONObject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import com.olympicService.olympicAPI.Service.Impl.ExamTicketDownloadImpl;
 import com.olympicService.olympicAPI.Service.Impl.JWTServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.SchoolUsersServiceImpl;
 import com.olympicService.olympicAPI.Service.Impl.SeatTagDownloadImpl;
+import com.olympicService.olympicAPI.Service.utils.Tool;
 
 @RestController
 public class TestController {
@@ -42,10 +44,13 @@ public class TestController {
 	@Autowired
 	private ExamCodeServiceIpml ExamCodeServiceIpml;
 	
+	@Autowired
+	private Tool Tool;
+	
 
 
 	@GetMapping("/test")
-	public String test() throws Exception {
+	public String test(HttpServletRequest request) throws Exception {
 //		AES256ServiceImpl.setKey("uBdUx82vPHkDKb284d7NkjFoNcKWBuka", "c558Gq0YQK2QUlMc");
 //		String a = AES256ServiceImpl.encode("(02)22987456");
 //		System.out.println(a);
@@ -90,12 +95,16 @@ public class TestController {
 
 //		ExamTicketDownloadImpl.test();
 
-		ClassListDownloadImpl.test();
+//		ClassListDownloadImpl.test();
 //		
 //		SeatTagDownloadImpl.test();
 		
 //		JSONObject result = ExamCodeServiceIpml.test();
 
+		String ip =Tool.getIpAddr(request);	
+		System.out.println(ip);
+		ip = Tool.fakeIp(ip);
+		System.out.println(ip);
 		return "5555";
 	}
 }

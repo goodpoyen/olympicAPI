@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
 
 	private Logger logger = LoggerFactory.getLogger("loginLog");
 
-	public JSONObject checkLogin(String account, String password, String SessionID) throws NoSuchAlgorithmException {
+	public JSONObject checkLogin(String account, String password, String SessionID, HttpServletRequest request) throws NoSuchAlgorithmException {
 		JSONObject user = new JSONObject();
 		JSONObject log = new JSONObject();
 		String status = "";
@@ -56,6 +58,10 @@ public class LoginServiceImpl implements LoginService {
 			claims.put("account", account);
 			claims.put("level", AdminUsers.getLevel());
 			claims.put("olympic", AdminUsers.getOlympic());
+			
+			String ip =Tool.getIpAddr(request);
+			ip =Tool.fakeIp(ip);
+			claims.put("ip", ip);
 
 			user.put("status", true);
 			claims.put("sessionID", SessionID);

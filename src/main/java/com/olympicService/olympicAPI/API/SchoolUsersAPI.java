@@ -37,7 +37,7 @@ public class SchoolUsersAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeAccessToken(schoolUsers.getAT());
+			JSONObject checkToken = WebTokenService.encodeAccessToken(schoolUsers.getAT(), request);
 
 			if (checkToken.getBoolean("status")) {
 				JSONArray users = SchoolUsersServiceImpl.getSchoolUsers(checkToken.getString("account"));

@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.olympicService.olympicAPI.DAO.Entity.AdminUsers;
 import com.olympicService.olympicAPI.Service.Impl.WebTokenServiceImpl;
+import com.olympicService.olympicAPI.Service.utils.Tool;
 import com.olympicService.olympicAPI.valid.TokenValid;
 
 @RestController
 public class TokenAPI {
 	@Autowired
 	private WebTokenServiceImpl WebTokenService;
+	
+	@Autowired
+	private Tool Tool;
 
 	@PostMapping("/checkRT")
 	public String checkRT(@Valid @RequestBody TokenValid token, BindingResult bindingResult,
@@ -34,13 +38,12 @@ public class TokenAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID);
+			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID, request);
 
 			if (checkToken.getBoolean("status")) {
 				result.put("code", 200);
 				result.put("msg", "success");
 				result.put("resultData", new JSONObject());
-
 			} else {
 				if (checkToken.getBoolean("change")) {
 					result.put("code", 401);
@@ -50,9 +53,13 @@ public class TokenAPI {
 					
 					Map<String, Object> claims = new HashMap<>();
 					
+					String ip =Tool.getIpAddr(request);
+					ip =Tool.fakeIp(ip);
+					
 					claims.put("account", AdminUsers.getEmail());
 					claims.put("level", AdminUsers.getLevel());
 					claims.put("olympic", AdminUsers.getOlympic());
+					claims.put("ip", ip);
 					
 					JSONObject reultData = new JSONObject();
 					
@@ -87,17 +94,21 @@ public class TokenAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID);
+			JSONObject checkToken = WebTokenService.encodeReflashToken(token.T, sessionID, request);
 
 			if (checkToken.getBoolean("status")) {
 				result.put("code", 200);
 				result.put("msg", "success");
+				
+				String ip =Tool.getIpAddr(request);
+				ip =Tool.fakeIp(ip);
 				
 				Map<String, Object> claims = new HashMap<>();
 				
 				claims.put("account", checkToken.get("account"));
 				claims.put("level", checkToken.get("level"));
 				claims.put("olympic",checkToken.get("olympic"));
+				claims.put("ip", ip);
 
 				JSONObject reultData = new JSONObject();
 				reultData.put("act", WebTokenService.getAccessToken(claims));

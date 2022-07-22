@@ -22,7 +22,7 @@ import com.olympicService.olympicAPI.valid.TokenValid;
 public class LoginAPI {
 	@Autowired
 	private WebTokenServiceImpl WebTokenService;
-	
+
 	@Autowired
 	private LoginServiceImpl LoginServiceImpl;
 
@@ -38,7 +38,7 @@ public class LoginAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject info = LoginServiceImpl.checkLogin(user.getAccount(), user.getPassword(), sessionID);
+			JSONObject info = LoginServiceImpl.checkLogin(user.getAccount(), user.getPassword(), sessionID, request);
 
 			if (info.getBoolean("status")) {
 				result.put("code", 200);
@@ -61,9 +61,9 @@ public class LoginAPI {
 
 		return result.toString();
 	}
-	
+
 	@PostMapping("/login/user")
-	public String getuser(@Valid @RequestBody TokenValid user, BindingResult bindingResult)
+	public String getuser(@Valid @RequestBody TokenValid user, BindingResult bindingResult, HttpServletRequest request)
 			throws NoSuchAlgorithmException, JSONException {
 		JSONObject result = new JSONObject();
 
@@ -72,7 +72,7 @@ public class LoginAPI {
 			result.put("msg", "param_error");
 			result.put("resultData", new JSONObject());
 		} else {
-			JSONObject checkToken = WebTokenService.encodeAccessToken(user.getT());
+			JSONObject checkToken = WebTokenService.encodeAccessToken(user.getT(), request);
 //			System.out.println(checkToken);
 			if (checkToken.getBoolean("status")) {
 				JSONObject userData = LoginServiceImpl.getuser(checkToken.getString("account"));
