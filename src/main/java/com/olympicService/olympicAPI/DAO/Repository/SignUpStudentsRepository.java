@@ -16,4 +16,9 @@ public interface SignUpStudentsRepository extends JpaRepository<SignUpStudents, 
 
 	@Query(value = "select st_id from sign_up_students where area = ?1", nativeQuery = true)
 	List<Map<String, Object>> getSignUpStudensByArea(String area);
+	
+	@Query(value = "select a.*, b.school_name as school_name2 from sign_up_students as a\n"
+			+ "left join school_list as b on a.school_name = b.school_number\n"
+			+ "where oly_id = ?1", nativeQuery = true)
+	List<Map<String, Object>> getpersonnels(Integer olyId);
 }

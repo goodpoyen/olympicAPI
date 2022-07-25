@@ -36,7 +36,7 @@ public class WebTokenServiceImpl implements WebTokenService {
 		claims.put("signID", "olympic");
 
 		String accessToken = JWTService.generateToken(timeout, secret, claims);
-		System.out.println(claims);
+
 		return accessToken;
 	}
 
@@ -46,8 +46,6 @@ public class WebTokenServiceImpl implements WebTokenService {
 		claims.put("signID", "twolympic");
 
 		String reflashToken = JWTService.generateToken(timeout, secret, claims);
-		
-		System.out.println(claims);
 
 		return reflashToken;
 	}
@@ -63,7 +61,6 @@ public class WebTokenServiceImpl implements WebTokenService {
 
 		try {
 			Claims claims = JWTService.validateToken(token, secret);
-			
 			if (checkUser(claims)) {
 				
 				String ip =Tool.getIpAddr(request);
